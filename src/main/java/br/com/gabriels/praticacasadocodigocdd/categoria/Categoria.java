@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import static org.springframework.util.Assert.hasText;
 
 @Entity
-public class Categoria {
+class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

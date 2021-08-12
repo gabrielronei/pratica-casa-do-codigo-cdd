@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import static org.springframework.util.Assert.*;
 
 @Entity
-public class Autor {
+class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
