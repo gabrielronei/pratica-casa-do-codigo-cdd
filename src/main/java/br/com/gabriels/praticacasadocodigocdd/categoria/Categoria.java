@@ -6,13 +6,14 @@ import javax.validation.constraints.NotBlank;
 import static org.springframework.util.Assert.hasText;
 
 @Entity
-class Categoria {
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String nome;
 
     @Deprecated
