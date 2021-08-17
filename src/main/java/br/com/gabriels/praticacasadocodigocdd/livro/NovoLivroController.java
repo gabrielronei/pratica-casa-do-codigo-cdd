@@ -19,5 +19,4 @@ public class NovoLivroController {
         entityManager.persist(novoLivroRequest.toModel(entityManager));
         return ResponseEntity.ok().build();
     }
-
 }
