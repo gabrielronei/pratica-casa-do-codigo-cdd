@@ -91,4 +91,32 @@ class Livro {
     public String getTitulo() {
         return titulo;
     }
+
+    public String getResumo() {
+        return resumo;
+    }
+
+    public String getSumario() {
+        return sumario;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public int getNumeroPaginas() {
+        return numeroPaginas;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getNomeAutor() {
+        return autor.getNome();
+    }
+
+    public String getDescricaoAutor() {
+        return autor.getDescricao();
+    }
 }

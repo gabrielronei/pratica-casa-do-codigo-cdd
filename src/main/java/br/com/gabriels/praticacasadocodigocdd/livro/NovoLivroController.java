@@ -13,7 +13,7 @@ public class NovoLivroController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @PostMapping("/livro")
+    @PostMapping("/livros")
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid NovoLivroRequest novoLivroRequest) {
         entityManager.persist(novoLivroRequest.toModel(entityManager));

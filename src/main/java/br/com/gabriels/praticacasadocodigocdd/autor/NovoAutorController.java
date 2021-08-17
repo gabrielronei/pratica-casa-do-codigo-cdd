@@ -13,7 +13,7 @@ class NovoAutorController {
     @PersistenceContext
     private EntityManager manager;
 
-    @PostMapping("/autor")
+    @PostMapping("/autores")
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid NovoAutorRequest novoAutorRequest) {
 

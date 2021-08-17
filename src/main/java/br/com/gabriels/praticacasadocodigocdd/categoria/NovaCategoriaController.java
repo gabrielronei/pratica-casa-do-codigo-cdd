@@ -13,7 +13,7 @@ class NovaCategoriaController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @PostMapping("/categoria")
+    @PostMapping("/categorias")
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid NovaCategoriaRequest novaCategoriaRequest) {
 
