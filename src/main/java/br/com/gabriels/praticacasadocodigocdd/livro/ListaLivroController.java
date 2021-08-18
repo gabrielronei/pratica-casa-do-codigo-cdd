@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @RestController
-public class ListaLivroController {
+class ListaLivroController {
 
     @PersistenceContext
     private EntityManager entityManager;
