@@ -1,4 +1,4 @@
-package br.com.gabriels.praticacasadocodigocdd.categoria;
+package br.com.gabriels.praticacasadocodigocdd.pais;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,16 +8,17 @@ import javax.persistence.*;
 import javax.validation.Valid;
 
 @RestController
-class NovaCategoriaController {
+class PaisController {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @PostMapping("/categorias")
+    @PostMapping("/paises")
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid NovaCategoriaRequest novaCategoriaRequest) {
+    public ResponseEntity cadastrar(@RequestBody @Valid NovoPaisRequest novoPaisRequest) {
 
-        entityManager.persist(novaCategoriaRequest.toModel());
+        entityManager.persist(novoPaisRequest.toModel());
         return ResponseEntity.ok().build();
     }
+
 }

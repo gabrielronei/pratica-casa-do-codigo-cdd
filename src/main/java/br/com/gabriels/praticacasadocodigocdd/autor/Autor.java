@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import static org.springframework.util.Assert.*;
 
 @Entity
-class Autor {
+public class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,7 @@ class Autor {
 
     @NotBlank
     @Email
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank
@@ -36,5 +37,13 @@ class Autor {
         this.email = email;
         this.nome = nome;
         this.descricao = descricao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }

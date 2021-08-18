@@ -1,4 +1,4 @@
-package br.com.gabriels.praticacasadocodigocdd.categoria;
+package br.com.gabriels.praticacasadocodigocdd.pais;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -6,22 +6,22 @@ import javax.validation.constraints.NotBlank;
 import static org.springframework.util.Assert.hasText;
 
 @Entity
-public class Categoria {
+public class Pais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String nome;
 
     @Deprecated
-    public Categoria() {
+    public Pais() {
     }
 
-    public Categoria(String nome) {
-        hasText(nome, "O nome da categoria é obrigatorio!");
+    public Pais(String nome) {
+        hasText(nome, "O nome do pais é obrigatorio!");
 
         this.nome = nome;
     }
