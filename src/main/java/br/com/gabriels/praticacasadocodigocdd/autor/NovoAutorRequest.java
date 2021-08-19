@@ -1,6 +1,6 @@
 package br.com.gabriels.praticacasadocodigocdd.autor;
 
-import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.CampoUnico;
+import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico.CampoUnico;
 
 import javax.validation.constraints.*;
 

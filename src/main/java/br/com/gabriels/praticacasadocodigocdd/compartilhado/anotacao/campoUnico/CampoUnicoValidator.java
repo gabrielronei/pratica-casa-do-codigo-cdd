@@ -1,4 +1,4 @@
-package br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao;
+package br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico;
 
 import javax.persistence.*;
 import javax.validation.*;

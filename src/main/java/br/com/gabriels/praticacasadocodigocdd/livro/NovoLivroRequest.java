@@ -2,7 +2,8 @@ package br.com.gabriels.praticacasadocodigocdd.livro;
 
 import br.com.gabriels.praticacasadocodigocdd.autor.Autor;
 import br.com.gabriels.praticacasadocodigocdd.categoria.Categoria;
-import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.CampoUnico;
+import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico.CampoUnico;
+import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.existeId.ExisteId;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -43,9 +44,11 @@ public class NovoLivroRequest {
     private LocalDate dataLancamento;
 
     @NotNull
+    @ExisteId(classeDominio = Categoria.class)
     private Long categoriaId;
 
     @NotNull
+    @ExisteId(classeDominio = Autor.class)
     private Long autorId;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

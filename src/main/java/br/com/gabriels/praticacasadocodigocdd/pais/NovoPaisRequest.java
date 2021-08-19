@@ -1,6 +1,6 @@
 package br.com.gabriels.praticacasadocodigocdd.pais;
 
-import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.CampoUnico;
+import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico.CampoUnico;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.validation.constraints.NotBlank;

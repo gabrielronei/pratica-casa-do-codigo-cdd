@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 import static org.springframework.util.Assert.*;
 
 @Entity
-class Estado {
+public class Estado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,9 @@ class Estado {
 
         this.nome = nome;
         this.pais = pais;
+    }
+
+    public boolean pertence(Pais pais) {
+        return this.pais.equals(pais);
     }
 }
