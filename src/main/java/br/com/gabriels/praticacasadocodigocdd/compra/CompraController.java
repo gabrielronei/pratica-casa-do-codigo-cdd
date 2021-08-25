@@ -21,7 +21,7 @@ class CompraController {
         binder.addValidators(new PaisTemEstadoPertencenteValidator(entityManager), new PrecoTotalCompraValidator(entityManager));
     }
 
-    @PostMapping("/comprar")
+    @PostMapping("/compra")
     @Transactional
     public ResponseEntity comprar(@RequestBody @Valid NovaCompraRequest novaCompraRequest) {
 
