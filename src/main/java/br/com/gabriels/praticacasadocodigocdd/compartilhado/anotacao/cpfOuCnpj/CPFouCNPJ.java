@@ -18,7 +18,7 @@ public @interface CPFouCNPJ {
 
     String message() default "Precisa ser um CPF ou um CNPJ valido!";
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 }

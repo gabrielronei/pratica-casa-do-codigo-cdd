@@ -1,7 +1,7 @@
 package br.com.gabriels.praticacasadocodigocdd.compra;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
 
 class CompraDetalhe {
 

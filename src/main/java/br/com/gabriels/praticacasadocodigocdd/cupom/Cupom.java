@@ -1,7 +1,5 @@
 package br.com.gabriels.praticacasadocodigocdd.cupom;
 
-import org.springframework.util.Assert;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;

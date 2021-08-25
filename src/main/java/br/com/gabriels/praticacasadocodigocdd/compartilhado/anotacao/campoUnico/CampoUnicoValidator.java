@@ -2,7 +2,7 @@ package br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico
 
 import javax.persistence.*;
 import javax.validation.*;
-import java.util.*;
+import java.util.List;
 
 public class CampoUnicoValidator implements ConstraintValidator<CampoUnico, Object> {
 

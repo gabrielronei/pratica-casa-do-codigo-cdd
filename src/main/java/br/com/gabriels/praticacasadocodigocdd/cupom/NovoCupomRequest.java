@@ -1,14 +1,13 @@
 package br.com.gabriels.praticacasadocodigocdd.cupom;
 
 import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.campoUnico.CampoUnico;
-import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.existeId.ExisteId;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static com.fasterxml.jackson.annotation.JsonCreator.Mode.*;
+import static com.fasterxml.jackson.annotation.JsonCreator.Mode.PROPERTIES;
 
 class NovoCupomRequest {
 
