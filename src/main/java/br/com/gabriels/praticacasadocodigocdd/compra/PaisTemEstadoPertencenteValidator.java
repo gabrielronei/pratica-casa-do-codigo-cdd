@@ -27,11 +27,16 @@ public class PaisTemEstadoPertencenteValidator implements Validator {
 
         Pais pais = entityManager.find(Pais.class, novaCompraRequest.getPaisId());
 
-        if (pais.possuiEstados() && novaCompraRequest.temEstadoId()) {
-            Estado estado = entityManager.find(Estado.class, novaCompraRequest.getEstadoId());
+        if (pais.possuiEstados()) {
 
-            if (!estado.pertence(pais)) {
-                errors.reject("estadoId", null, "Opa, este estado não pertence a este pais!");
+            if (!novaCompraRequest.temEstadoId()) {
+                errors.rejectValue("estadoId", null, "É necessario o id de um estado para este pais!");
+            } else if (novaCompraRequest.temEstadoId()) {
+                Estado estado = entityManager.find(Estado.class, novaCompraRequest.getEstadoId());
+
+                if (!estado.pertence(pais)) {
+                    errors.rejectValue("estadoId", null, "Opa, este estado não pertence a este pais!");
+                }
             }
         }
     }

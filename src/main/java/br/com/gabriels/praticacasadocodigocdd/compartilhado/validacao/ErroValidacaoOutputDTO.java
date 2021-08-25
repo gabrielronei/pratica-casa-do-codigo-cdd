@@ -4,6 +4,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.*;
 
 import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 public class ErroValidacaoOutputDTO {
@@ -13,7 +14,9 @@ public class ErroValidacaoOutputDTO {
 
     public ErroValidacaoOutputDTO(List<ObjectError> mensagensDeErro, List<FieldError> errosDeCampo) {
         this.mensagensDeErro = mensagensDeErro.stream().map(ObjectError::toString).toList();
-        this.errosDeCampo = errosDeCampo.stream().collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
+
+        BinaryOperator<String> funcaoMerge = (valorAntigo, novoValor) -> novoValor;
+        this.errosDeCampo = errosDeCampo.stream().collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage, funcaoMerge));
     }
 
     public List<String> getMensagensDeErro() {

@@ -5,7 +5,12 @@ import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.existeId.Ex
 import br.com.gabriels.praticacasadocodigocdd.pais.Pais;
 import br.com.gabriels.praticacasadocodigocdd.pais.estado.Estado;
 
+import javax.persistence.EntityManager;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -47,9 +52,17 @@ class NovaCompraRequest {
     @NotBlank
     private String cep;
 
+    @NotNull
+    @Positive
+    @Min(1)
+    private BigDecimal total;
+
+    @Valid
+    @Size(min = 1)
+    private Set<NovoItemCompraRequest> itens = new HashSet<>();
 
     public NovaCompraRequest(String email, String nome, String sobrenome, String documento, String endereco, String complemento,
-                             String cidade, Long paisId, Long estadoId, String telefone, String cep) {
+                             String cidade, Long paisId, Long estadoId, String telefone, String cep, BigDecimal total, Set<NovoItemCompraRequest> itens) {
         this.email = email;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -61,6 +74,8 @@ class NovaCompraRequest {
         this.estadoId = estadoId;
         this.telefone = telefone;
         this.cep = cep;
+        this.total = total;
+        this.itens = itens;
     }
 
     public Long getPaisId() {
@@ -73,5 +88,61 @@ class NovaCompraRequest {
 
     public boolean temEstadoId() {
         return nonNull(estadoId);
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public Set<Long> getItensIds() {
+        return itens.stream().map(NovoItemCompraRequest::getLivroId).collect(Collectors.toSet());
+    }
+
+    public Set<NovoItemCompraRequest> getItens() {
+        return itens;
+    }
+
+    public BigDecimal calculaValorTotal(Map<Long, BigDecimal> livros) {
+        return this.itens.stream().map(item -> item.calculaValor(livros.get(item.getLivroId())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public boolean totalDiferente(BigDecimal totalServidor) {
+        return this.total.compareTo(totalServidor) != 0;
+    }
+
+    public Compra toModel(EntityManager manager) {
+        Pais pais = manager.find(Pais.class, this.paisId);
+
+        Set<ItemCompra> itens = this.getItens().stream().map(novoItem -> novoItem.toModel(manager)).collect(Collectors.toSet());
+
+        Compra compra = new Compra(this.email, this.nome, this.sobrenome, this.documento, this.endereco, this.complemento, this.cidade, pais,
+                this.telefone, this.cep, this.total, itens);
+
+        if (this.temEstadoId()) {
+            Estado estado = manager.find(Estado.class, this.estadoId);
+            compra.setEstado(estado);
+        }
+
+        return compra;
+    }
+
+    @Override
+    public String toString() {
+        return "NovaCompraRequest{" +
+                "email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", documento='" + documento + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", paisId=" + paisId +
+                ", estadoId=" + estadoId +
+                ", telefone='" + telefone + '\'' +
+                ", cep='" + cep + '\'' +
+                ", total=" + total +
+                ", itens=" + itens +
+                '}';
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 class CompraController {
@@ -17,14 +18,18 @@ class CompraController {
 
     @InitBinder("novaCompraRequest")
     public void initBinder(WebDataBinder binder) {
-        binder.addValidators(new PaisTemEstadoPertencenteValidator(entityManager));
+        binder.addValidators(new PaisTemEstadoPertencenteValidator(entityManager), new PrecoTotalCompraValidator(entityManager));
     }
 
     @PostMapping("/comprar")
     @Transactional
     public ResponseEntity comprar(@RequestBody @Valid NovaCompraRequest novaCompraRequest) {
 
-        return ResponseEntity.ok().build();
+        Compra compra = novaCompraRequest.toModel(entityManager);
+        entityManager.persist(compra);
+
+        URI uri = URI.create("/compras/" + compra.getId());
+        return ResponseEntity.created(uri).build();
     }
 
 }
