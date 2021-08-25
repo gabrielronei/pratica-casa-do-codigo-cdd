@@ -13,6 +13,8 @@ public @interface ExisteId {
 
     boolean obrigatorio() default true;
 
+    String nomeCampo() default "id";
+
     String message() default "{gabriel.existe.id.mensagem}";
 
     Class<?>[] groups() default {};

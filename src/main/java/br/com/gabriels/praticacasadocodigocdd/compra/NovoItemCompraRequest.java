@@ -6,7 +6,6 @@ import br.com.gabriels.praticacasadocodigocdd.livro.Livro;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 class NovoItemCompraRequest {
 
@@ -25,10 +24,6 @@ class NovoItemCompraRequest {
 
     public Long getLivroId() {
         return livroId;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
     }
 
     public BigDecimal calculaValor(BigDecimal precoOriginal) {
@@ -52,14 +47,6 @@ class NovoItemCompraRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(livroId);
-    }
-
-    @Override
-    public String toString() {
-        return "NovoItemCompraRequest{" +
-                "livroId=" + livroId +
-                ", quantidade=" + quantidade +
-                '}';
+        return 31 * livroId.hashCode();
     }
 }

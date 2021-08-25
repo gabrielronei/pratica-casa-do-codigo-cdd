@@ -2,6 +2,7 @@ package br.com.gabriels.praticacasadocodigocdd.compra;
 
 import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.cpfOuCnpj.CPFouCNPJ;
 import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.existeId.ExisteId;
+import br.com.gabriels.praticacasadocodigocdd.cupom.Cupom;
 import br.com.gabriels.praticacasadocodigocdd.pais.Pais;
 import br.com.gabriels.praticacasadocodigocdd.pais.estado.Estado;
 
@@ -13,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static java.util.function.Predicate.not;
 
 class NovaCompraRequest {
 
@@ -61,8 +63,12 @@ class NovaCompraRequest {
     @Size(min = 1)
     private Set<NovoItemCompraRequest> itens = new HashSet<>();
 
+    @ExisteId(classeDominio = Cupom.class, nomeCampo = "codigo", obrigatorio = false)
+    private String codigoCupom;
+
     public NovaCompraRequest(String email, String nome, String sobrenome, String documento, String endereco, String complemento,
-                             String cidade, Long paisId, Long estadoId, String telefone, String cep, BigDecimal total, Set<NovoItemCompraRequest> itens) {
+                             String cidade, Long paisId, Long estadoId, String telefone, String cep, BigDecimal total,
+                             Set<NovoItemCompraRequest> itens, String codigoCupom) {
         this.email = email;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -76,6 +82,7 @@ class NovaCompraRequest {
         this.cep = cep;
         this.total = total;
         this.itens = itens;
+        this.codigoCupom = codigoCupom;
     }
 
     public Long getPaisId() {
@@ -88,10 +95,6 @@ class NovaCompraRequest {
 
     public boolean temEstadoId() {
         return nonNull(estadoId);
-    }
-
-    public BigDecimal getTotal() {
-        return total;
     }
 
     public Set<Long> getItensIds() {
@@ -111,6 +114,10 @@ class NovaCompraRequest {
         return this.total.compareTo(totalServidor) != 0;
     }
 
+    public Optional<String> getCodigoCupom() {
+        return Optional.ofNullable(codigoCupom).filter(not(String::isBlank));
+    }
+
     public Compra toModel(EntityManager manager) {
         Pais pais = manager.find(Pais.class, this.paisId);
 
@@ -124,25 +131,12 @@ class NovaCompraRequest {
             compra.setEstado(estado);
         }
 
-        return compra;
-    }
+        if (this.getCodigoCupom().isPresent()) {
+            Cupom cupom = manager.createQuery("SELECT c FROM Cupom c where c.codigo = :codigo", Cupom.class)
+                    .setParameter("codigo", this.codigoCupom).getSingleResult();
+            compra.aplica(cupom);
+        }
 
-    @Override
-    public String toString() {
-        return "NovaCompraRequest{" +
-                "email='" + email + '\'' +
-                ", nome='" + nome + '\'' +
-                ", sobrenome='" + sobrenome + '\'' +
-                ", documento='" + documento + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", complemento='" + complemento + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", paisId=" + paisId +
-                ", estadoId=" + estadoId +
-                ", telefone='" + telefone + '\'' +
-                ", cep='" + cep + '\'' +
-                ", total=" + total +
-                ", itens=" + itens +
-                '}';
+        return compra;
     }
 }

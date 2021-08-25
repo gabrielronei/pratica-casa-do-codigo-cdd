@@ -7,9 +7,10 @@ import javax.validation.*;
 import java.util.Objects;
 
 @Component
-public class ExisteIdValidator implements ConstraintValidator<ExisteId, Long> {
+public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> {
 
     private Class classeDominio;
+    private String nomeCampo;
     private boolean obrigatorio;
 
     @PersistenceContext
@@ -20,14 +21,16 @@ public class ExisteIdValidator implements ConstraintValidator<ExisteId, Long> {
         ConstraintValidator.super.initialize(constraintAnnotation);
 
         this.classeDominio = constraintAnnotation.classeDominio();
+        this.nomeCampo = constraintAnnotation.nomeCampo();
         this.obrigatorio = constraintAnnotation.obrigatorio();
     }
 
     @Override
-    public boolean isValid(Long id, ConstraintValidatorContext context) {
+    public boolean isValid(Object id, ConstraintValidatorContext context) {
         if (!(this.obrigatorio) && Objects.isNull(id)) return true;
 
-        Boolean exists = entityManager.createQuery("SELECT count(entidade) > 0 FROM " + classeDominio.getName() + " entidade WHERE id = :id", Boolean.class)
+        Boolean exists = entityManager.createQuery("SELECT count(entidade) > 0 FROM " + classeDominio.getName() + " entidade WHERE "
+                        + this.nomeCampo + " = :id", Boolean.class)
                 .setParameter("id", id).getSingleResult();
 
         context.disableDefaultConstraintViolation();

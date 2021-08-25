@@ -1,6 +1,7 @@
 package br.com.gabriels.praticacasadocodigocdd.compra;
 
 import br.com.gabriels.praticacasadocodigocdd.compartilhado.anotacao.cpfOuCnpj.CPFouCNPJ;
+import br.com.gabriels.praticacasadocodigocdd.cupom.Cupom;
 import br.com.gabriels.praticacasadocodigocdd.pais.Pais;
 import br.com.gabriels.praticacasadocodigocdd.pais.estado.Estado;
 
@@ -63,7 +64,11 @@ public class Compra {
 
     @NotNull
     @Positive
-    private BigDecimal precoTotal;
+    private BigDecimal precoTotalBruto;
+
+    @NotNull
+    @Positive
+    private BigDecimal precoTotalLiquido;
 
     @Size(min = 1)
     @NotNull
@@ -71,13 +76,17 @@ public class Compra {
     @JoinColumn(name = "compra_id")
     private Set<ItemCompra> itens = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "cupom_id")
+    private Cupom cupom;
+
     @Deprecated
     public Compra() {
     }
 
     public Compra(String email, String nome, String sobrenome, String documento,
                   String endereco, String complemento, String cidade, Pais pais,
-                  String telefone, String cep, BigDecimal precoTotal, Set<ItemCompra> itens) {
+                  String telefone, String cep, BigDecimal precoTotalBruto, Set<ItemCompra> itens) {
         hasText(email, "O email não pode estar em branco!");
         hasText(nome, "O nome não pode estar em branco!");
         hasText(sobrenome, "O sobrenome não pode estar em branco!");
@@ -88,9 +97,8 @@ public class Compra {
         notNull(pais, "O Pais não pode estar em branco!");
         hasText(telefone, "O telefone não pode estar em branco!");
         hasText(cep, "O telefone não pode estar em branco!");
-        notNull(precoTotal, "O precoTotal não pode estar em branco!");
+        notNull(precoTotalBruto, "O precoTotal não pode estar em branco!");
         state(itens.size() > 0, "Quantidade precisa ser maior que 0!");
-
 
         this.email = email;
         this.nome = nome;
@@ -102,7 +110,8 @@ public class Compra {
         this.pais = pais;
         this.telefone = telefone;
         this.cep = cep;
-        this.precoTotal = precoTotal;
+        this.precoTotalBruto = precoTotalBruto;
+        this.precoTotalLiquido = precoTotalBruto;
         this.itens = itens;
     }
 
@@ -113,5 +122,14 @@ public class Compra {
     public void setEstado(Estado estado) {
         isTrue(estado.pertence(pais), "Desculpa, esse estado não pertence ao pais definido!");
         this.estado = estado;
+    }
+
+    public void aplica(Cupom cupom) {
+        isNull(this.cupom, "Essa compra já possui um cupom, você não pode definir outro!");
+        notNull(cupom, "O cupom passado não pode estar nulo!");
+        isTrue(cupom.estaValido(), "O cupom precisa estar valido!");
+
+        this.cupom = cupom;
+        this.precoTotalLiquido = cupom.getValorDescontado(this.precoTotalBruto);
     }
 }

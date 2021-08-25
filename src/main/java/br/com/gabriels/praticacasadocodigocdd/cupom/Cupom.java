@@ -49,4 +49,14 @@ public class Cupom {
         this.percentual = percentual;
         this.validade = validade;
     }
+
+    public boolean estaValido() {
+        return this.validade.isAfter(LocalDate.now());
+    }
+
+    public BigDecimal getValorDescontado(BigDecimal precoTotalBruto) {
+        notNull(precoTotalBruto, "Preço total bruto não pode estar nulo!");
+
+        return precoTotalBruto.multiply(this.percentual).divide(BigDecimal.valueOf(100));
+    }
 }
