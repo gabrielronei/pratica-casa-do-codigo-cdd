@@ -37,6 +37,10 @@ public class Pais {
         return !this.estados.isEmpty();
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

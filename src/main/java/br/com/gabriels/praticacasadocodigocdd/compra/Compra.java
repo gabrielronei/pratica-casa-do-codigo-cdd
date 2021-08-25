@@ -66,10 +66,6 @@ public class Compra {
     @Positive
     private BigDecimal precoTotalBruto;
 
-    @NotNull
-    @Positive
-    private BigDecimal precoTotalLiquido;
-
     @Size(min = 1)
     @NotNull
     @OneToMany(cascade = CascadeType.PERSIST)
@@ -111,12 +107,76 @@ public class Compra {
         this.telefone = telefone;
         this.cep = cep;
         this.precoTotalBruto = precoTotalBruto;
-        this.precoTotalLiquido = precoTotalBruto;
         this.itens = itens;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getNomePais() {
+        return pais.getNome();
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public BigDecimal getPrecoTotalBruto() {
+        return precoTotalBruto;
+    }
+
+    public Set<ItemCompra> getItens() {
+        return itens;
+    }
+
+    public Optional<String> getNomeEstado() {
+        return Optional.ofNullable(estado).map(Estado::getNome);
+    }
+
+
+    public Optional<String> getCupomAplicado() {
+        return Optional.ofNullable(cupom).map(Cupom::getCodigo);
+    }
+
+    public boolean temCupom() {
+        return Optional.ofNullable(cupom).isPresent();
+    }
+
+    public Optional<BigDecimal> getPrecoTotalLiquido() {
+        return Optional.ofNullable(cupom).map(c -> c.getValorDescontado(precoTotalBruto));
     }
 
     public void setEstado(Estado estado) {
@@ -130,6 +190,5 @@ public class Compra {
         isTrue(cupom.estaValido(), "O cupom precisa estar valido!");
 
         this.cupom = cupom;
-        this.precoTotalLiquido = cupom.getValorDescontado(this.precoTotalBruto);
     }
 }

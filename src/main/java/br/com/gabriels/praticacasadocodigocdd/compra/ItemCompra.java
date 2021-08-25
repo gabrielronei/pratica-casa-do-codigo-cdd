@@ -41,6 +41,18 @@ public class ItemCompra {
         this.quantidade = quantidade;
     }
 
+    public String getTituloLivro() {
+        return livro.getTitulo();
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
